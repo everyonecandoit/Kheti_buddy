@@ -4,7 +4,9 @@ role based login logout
 1.npm init
 
 FOR FRONTEND
+<br>
 ---->cd client\vite-project
+<br>
 ----->npm run dev
 
 
@@ -13,7 +15,9 @@ FOR FRONTEND
 
 
 FOR BACKEND
+<br>
  --->cd server
+ <br>
  --->nodemon index.js
 
 you will see this in console
