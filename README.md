@@ -1,6 +1,6 @@
 # Kheti_buddy
 role based login logout 
-
+1.npm init
 
 FOR FRONTEND
 ---->cd client\vite-project
