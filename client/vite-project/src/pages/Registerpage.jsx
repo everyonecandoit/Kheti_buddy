@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { Link , useNavigate } from 'react-router-dom';
-import Dropdown from 'react-bootstrap/Dropdown';
+// import Dropdown from 'react-bootstrap/Dropdown';
 
 
 
@@ -71,7 +71,7 @@ function Registerpage() {
           <input 
             type='password' 
             value={password}
-            placeholder='please emter your password'
+            placeholder='please enter your password'
             autoComplete='off'
             className='form-control rounded-1'
             onChange={(e)=>setPassword(e.target.value)}
@@ -82,8 +82,8 @@ function Registerpage() {
       <h3>Simple Dropdown Example</h3>
       <select value={role} onChange={handleSelectChange}>
         <option value="">Select an option</option>
-        <option value="Option 1">Admin</option>
-        <option value="Option 2">Visitor</option>
+        <option value="Admin">Admin</option>
+        <option value="Visitor">Visitor</option>
       </select>
       <p>Selected Value: {role}</p>
     </div>

@@ -27,6 +27,33 @@ mongoose.connect(url)
         console.log(err);
     })
 
+    const verifyuser = (req,res,next)=>{
+      const token = req.cookies.token;
+      if(!token){
+        return res.json("Token is not present ")
+      }
+      else{
+        jwt.verify(token,"SECRET_KEY",(err,decodedvalue)=>{
+          if(err){
+            return res.json(err);
+          }
+          else{
+            if(decodedvalue.role==="Admin"){
+              next()
+            }
+            else{
+              return res.json("You are not authorized to access this page.");
+            }
+
+          }
+        })
+      }
+
+    }
+   app.get('/seller',verifyuser,(req, res)=>{
+    res.json("Sucess");
+   })
+
 
     app.post('/register', async (req, res) => {
         try {
