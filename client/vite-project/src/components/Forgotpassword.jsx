@@ -5,33 +5,27 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { Link , useNavigate } from 'react-router-dom';
 
-function Loginpage() {
+function Forgotpassword() {
   // const [name,setName] =useState("");
   const [email,setEmail] =useState();
-  const [password,setPassword] =useState();
+  const [name,setName] =useState();
+  
 
   // handle submit function 
   const navigate = useNavigate();
   axios.defaults.withCredentials=true;
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:3000/login',{email,password})
+    axios.post('http://localhost:3000/forgot-password',{email})
     .then(res=>{
-      console.log(res.data);
-      const{role} =res.data;
-      if(res.data.Status===200){
-        if(res.data.role=='Admin'){
-          navigate('/seller');
-        }
-        else{
-          navigate('/');
-        }
-      }
       
-
-      alert("Login was succesfull")
-    }).catch(err => {
-      alert("there was some issue ")
+     
+      if(res.data.Status===200){
+        alert('Email sent successfully , please check your inbox');
+        navigate('/login');
+        }
+      }).catch(err => {
+      alert("there was some issue at the server side please wait !!")
       console.log(err)
     })
 
@@ -55,26 +49,27 @@ function Loginpage() {
 
           />
         </label>
-        {/* password */}
         <label>
-          <strong>Password</strong>
+          <strong>Name</strong>
           <input 
-            type='password' 
-            value={password}
-            placeholder='please emter your password'
+            type='text'
+            value={name} 
+            placeholder='Enter your name'
             autoComplete='off'
             className='form-control rounded-1'
-            onChange={(e)=>setPassword(e.target.value)}
+            onChange={(e)=>setName(e.target.value)}
+
           />
         </label>
+      
     </form>
-      <Link to="/forgot-password">Forgot Password</Link>
+      
       </div>
       <Button variant="primary" type="submit" onClick={handleSubmit}>
-        Sing-in
+        Send OTP
       </Button>
     </div>
   )
 }
 
-export default Loginpage
+export default Forgotpassword

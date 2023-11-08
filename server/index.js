@@ -6,6 +6,7 @@ const jwt  = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const UserModel = require('./models/usermodel.js')
 const bcrypt = require('bcrypt');
+const nodemailer = require("nodemailer");
 
 const app = express();
 app.use(express.json());
@@ -26,6 +27,8 @@ mongoose.connect(url)
     .catch((err)=>{
         console.log(err);
     })
+
+    // seller connection
 
     const verifyuser = (req,res,next)=>{
       const token = req.cookies.token;
@@ -50,6 +53,7 @@ mongoose.connect(url)
       }
 
     }
+
    app.get('/seller',verifyuser,(req, res)=>{
     res.json("Sucess");
    })
@@ -86,8 +90,8 @@ mongoose.connect(url)
                 bcrypt.compare(password, user.password, (err, passwordMatch) => {
                   if (passwordMatch) {
                     const token = jwt.sign({ email: user.email, role: user.role }, "SECRET_KEY", { expiresIn: '1d' });
-                    res.cookie('token', token);
-                    return res.json({Status:200,role:user.role});
+                    res.cookie('token',token);
+                    return res.json({Status:200,role:user.role,cookie:token});
                   } else {
                     return res.json("The password is incorrect. Please try again");
                   }
@@ -100,7 +104,45 @@ mongoose.connect(url)
           res.status(500).json({ error: 'Internal Server Error' });
         }
       });
+
+      app.post('/logout',(req, res) => {
+        res.cookie('token','').json('ok');
+    })
       
+
+    app.post('/forgot-password',(req, res) => {
+      const {email}= req.body;
+      UserModel.findOne({email: email})
+      .then(user=>{
+        if(!user){
+          res.send({Status:404 ,message:"User does not exist"})
+        }
+        const token = jwt.sign({id:user._id},"SECRET_KEY",{expiresIn:180})
+        var transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'khetibuddy001@gmail.com',
+            pass: 'ukrr dtwx tabh xaip'
+          }
+        });
+        
+        var mailOptions = {
+          from: 'khetibuddy001@gmail.com',
+          to: email,
+          subject: 'Reset Password Link',
+          text: `Hi ${user.name} here is your link to  reset you password http://localhost:3000/reset_password/${user._id}/${token} please keep in mind the link is valid for only 3 mins.`
+        };
+        
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            return res.send({Status:200})
+          }
+      })
+
+    })
+  });
 
 
 app.listen(3000,()=>{

@@ -2,6 +2,9 @@ import React, { useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import Navbar from '../components/Navbar'
+
+// import Logoutbutton from '../components/Logoutbutton';
 
 function Dashboard() {
   // const navigate = useNavigate();
@@ -24,8 +27,9 @@ function Dashboard() {
   // },[])  
   return (
 
-    <div>Dashboard
-    {/* <p>{suces}</p> */}
+    <div>
+    <Navbar/>
+    <strong>Dashboard</strong>
     </div>
   )
 }
